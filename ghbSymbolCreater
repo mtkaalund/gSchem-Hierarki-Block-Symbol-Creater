@@ -1,0 +1,134 @@
+import datetime
+import argparse
+
+def getpins(parsed):
+	with open(parsed.filename,'r') as f:
+		data = f.read()
+	
+	braces = False
+	refdes = ""
+	symbol = ""
+	output = []
+
+	for line in data.split('\n'):
+		if "out-1.sym" in line or "in-1.sym" in line or braces:
+			if "out-1.sym" in line:
+				symbol = "out"
+		
+			if "in-1.sym" in line:
+				symbol = "in"
+
+			if "refdes" in line:
+				refdes = line.replace("refdes=","")
+
+			if "device" in line:
+				if "output" in line.lower().replace("device",""):
+					symbol = "out"
+				if "input" in line.lower().replace("device",""):
+					symbol = "in"
+	
+			if not braces:
+				braces = True
+			
+			if "}" in line and braces:
+				braces = False
+				output.append([symbol, refdes])
+				symbol = ""
+				refdes = ""
+	return output
+
+def createsrc(items,parsed):
+	wstmp = "yes" if parsed.wordswap else "no"
+	sltmp = "yes" if parsed.sortlabels else "no"
+	pstmp = "yes" if parsed.pinseq else "no"
+
+	plist = ["[options]",
+		 "wordswap=" + wstmp,
+		 "rotate_labels=no",
+		 "sort_labels=" + sltmp,
+		 "generate_pinseq=" + pstmp,
+		 "sym_width=" + str(parsed.symbolwidth),
+		 "pinwidthvertical=400",
+		 "pinwidthhorizontal=400",
+		 "[geda_attr]",
+		 "version=" + str(datetime.date.today().strftime('%Y%m%d')) + " " + str(parsed.symversion),
+		 "name="+parsed.filename.replace(".sch",""),
+		 "device=none","refdes=S?",
+		 "author="+parsed.author,
+		 "dist-license="+parsed.distlicense,
+		 "use-license="+parsed.uselicense,
+		 "numslots=0",
+		 "[pins]"]
+
+	del wstmp
+	del sltmp
+	del pstmp
+
+	index = 1
+	side = "r"
+	
+	with open(parsed.filename.replace(".sch",".src"),'w') as f:
+		for entry in plist:
+			f.write(entry + "\n")
+
+		for item in items:
+			if "in" in item[0]:
+				side = "l"
+			if "out" in item[0]:
+				side = "r"
+
+			string = str(index) + "\t\t" + item[0] 
+			string = string + "\tline\t" + side 
+			string = string + "\t\t" + item[1] + "\n"
+
+			f.write(string)
+			index = index + 1
+		
+
+
+def main(parsed):
+	items = getpins(parsed)
+	createsrc(items ,parsed)
+
+
+if __name__ == "__main__":
+	desc = "Used to create hieraki block symbols for gschem"
+	epi = '''
+	First run this script agains your gschem schematic.
+	The script will then create an .src file in the directory of the .sch file,
+	this .src file can then be run with "tragesym" to create your hiraki block symbol.
+
+	As this script checks for use of "out-1.sym" and "in-1.sym" it is requred that
+	your schematic uses this.
+		KBO - Keep Buggering On	
+	'''
+	vers = "0.1a"
+	pars_arg = [{"arg":'--file', "action":"store","dest":"filename","default":None,"help":"path to gschem file, that need to be converted"},
+	{"arg":"--author","action":"store","dest":"author","default":"env","help":"Sets the authors name and email: 'authors name <author@email.com>'"},
+	{"arg":"--dlicense","action":"store","dest":"distlicense","default":"public domain","help":"Sets the license terms for distribution of this symbol"},
+	{"arg":"--ulicense","action":"store","dest":"uselicense","default":"unlimited","help":"Sets the license terms for using this symbol"},
+	{"arg":"--symversion","action":"store","dest":"symversion","default":"1","help":"Setting the version number for this symbol"},
+	{"arg":"--sort","action":"store_false","dest":"sortlabels","default":True,"help":"Disable sorting of labels"},
+	{"arg":"--pinseq","dest":"pinseq","action":"store_false","default":True, "help":"Disable generating of pin seq"},
+	{"arg":"--wordswap","dest":"wordswap","default":True,"action":"store_false","help":"Disable word swap"}]
+
+	parser = argparse.ArgumentParser(description=desc,version=vers,epilog=epi)
+	
+	for item in pars_arg:
+		parser.add_argument(item["arg"], action=item["action"], dest=item["dest"], default=item["default"], help=item["help"])
+	parser.add_argument("--width", action="store", dest="symbolwidth",default=1800,help="Width of the symbol (default:1800)",type=int)
+
+	parsed = parser.parse_args()	
+	
+	print "Filename:",parsed.filename
+	print "Author:",parsed.author
+	print "Distribution license:",parsed.distlicense
+	print "Use license:",parsed.uselicense
+	print "Symbol version:",parsed.symversion
+	print "Sort Labels:",parsed.sortlabels
+	print "Generate pin seq:",parsed.pinseq
+	print "Word swap:",parsed.wordswap
+	print "Symbol width:",parsed.symbolwidth
+	
+	main(parsed)
+
