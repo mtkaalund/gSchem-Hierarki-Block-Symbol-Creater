@@ -1,0 +1,51 @@
+Depends on packages (Ubuntu):
+	python-argparse
+
+Author: Michael Torp Kaalund <kaalund@gmail.com>
+Description:
+	Creates an .src file, that can be used with "tragesym" to create an hieraki block
+	symbol, that can be added to ones schematics.
+		KBO - Keep buggering on
+
+Work flow:
+	$python hbsymbolecreater.py --file page2.sch --author "Michael Torp Kaalund<kaalund@gmail.com>"
+	$tragesym page2.src page2.sym
+
+	After tragesym is finished, then add the "page2.sym" to your symbols directory.
+	Add to your circuit diagram. :D
+
+
+
+Usage:
+
+python hbsymbolecreater.py --help
+usage: hbsymbolecreater.py [-h] [-v] [--file FILENAME] [--author AUTHOR]
+                          [--dlicense DISTLICENSE] [--ulicense USELICENSE]
+                          [--symversion SYMVERSION] [--sort] [--pinseq]
+                          [--wordswap] [--width SYMBOLWIDTH]
+
+Used to create hieraki block symbols for gschem
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  --file FILENAME       path to gschem file, that need to be converted
+  --author AUTHOR       Sets the authors name and email: 'authors name
+                        <author@email.com>'
+  --dlicense DISTLICENSE
+                        Sets the license terms for distribution of this symbol
+  --ulicense USELICENSE
+                        Sets the license terms for using this symbol
+  --symversion SYMVERSION
+                        Setting the version number for this symbol
+  --sort                Disable sorting of labels
+  --pinseq              Disable generating of pin seq
+  --wordswap            Disable word swap
+  --width SYMBOLWIDTH   Width of the symbol (default:1800)
+
+First run this script agains your gschem schematic. The script will then
+create an .src file in the directory of the .sch file, this .src file can then
+be run with "tragesym" to create your hiraki block symbol. As this script
+checks for use of "out-1.sym" and "in-1.sym" it is requred that your schematic
+uses this. KBO - Keep Buggering On
+
