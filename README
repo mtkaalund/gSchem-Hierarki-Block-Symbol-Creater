@@ -8,7 +8,7 @@ Description:
 		KBO - Keep buggering on
 
 Work flow:
-	$python hbsymbolecreater.py --file page2.sch --author "Michael Torp Kaalund<kaalund@gmail.com>"
+	$python ghbSymboleCreater --file page2.sch --author "Michael Torp Kaalund<kaalund@gmail.com>"
 	$tragesym page2.src page2.sym
 
 	After tragesym is finished, then add the "page2.sym" to your symbols directory.
@@ -18,8 +18,8 @@ Work flow:
 
 Usage:
 
-python hbsymbolecreater.py --help
-usage: hbsymbolecreater.py [-h] [-v] [--file FILENAME] [--author AUTHOR]
+python ghbSymboleCreater --help
+usage: ghbSymboleCreater [-h] [-v] [--file FILENAME] [--author AUTHOR]
                           [--dlicense DISTLICENSE] [--ulicense USELICENSE]
                           [--symversion SYMVERSION] [--sort] [--pinseq]
                           [--wordswap] [--width SYMBOLWIDTH]
