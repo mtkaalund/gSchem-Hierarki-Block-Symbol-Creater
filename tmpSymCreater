@@ -14,17 +14,17 @@ class SchematicDraw:
 	
 
 	def box(self, x, y, w, h, c, linewidth, capstyle, dashstyle, dashlength, dashspace, filltype, fillwidth, argle1, pitch1, angle2, pitch2):
-		sout = "B" + add_to(x) + add_to(y) + add_to(w) + " "
-		sout = sout + add_to(h)+ add_to(c) + add_to(linewidth) + " "
-		sout = sout + add_to(capstyle) + " "
+		sout = "B" + add_to(x) + add_to(y) + add_to(w)
+		sout = sout + add_to(h)+ add_to(c) + add_to(linewidth)
+		sout = sout + add_to(capstyle)
 
 		# if dashstyle is not used for SOLID and DOTTED
 		if dashstyle == 0 or dashstyle == 1:
 			dashlength = -1
 			if dashstyle == 0:
 				dashspace  = -1
-		sout = sout + add_to(dashstyle) + add_to(dashlength) + " "
-		sout = sout + add_to(dashspace) + add_to(filltype) + " "
+		sout = sout + add_to(dashstyle) + add_to(dashlength)
+		sout = sout + add_to(dashspace) + add_to(filltype)
 		
 		if filltype == 0:
 			fillwidth = -1
@@ -33,10 +33,16 @@ class SchematicDraw:
 			pitch1 = -1
 			pitch2 = -1
 		
-		sout = sout + add_to(fillwidth) + add_to(angle1) + " "
-		sout = sout + add_to(pitch1) + add_to(angle2) + " "
+		sout = sout + add_to(fillwidth) + add_to(angle1)
+		sout = sout + add_to(pitch1) + add_to(angle2)
 		sout = sout + add_to(pitch2) 
 
+		return sout + '\n'
+
+	def pin(self, x1, y1, x2, y2, color, pintype, whichend):
+		sout = "P" + add_to(x1) + add_to(y1) + add_to(x2)
+		sout = sout + add_to(y2) + add_to(color)
+		sout = sout + add_to(pintype) + add_to(whichend)
 		return sout + '\n'
 		
 
@@ -44,7 +50,8 @@ if __name__ == "__main__":
 	print "This is an test, of how to create a gschem symbol"
 	obj = SchematicDraw()
 	print obj.add_version(),
-	print obj.box(33000,67300, 2000, 2000, 3, 60, 0, 2, 75, 50, 0, 1, 1, 1,1,1)
+	print obj.box(33000,67300, 2000, 2000, 3, 60, 0, 2, 75, 50, 0, 1, 1, 1,1,1),
+	print obj.pin(0,200,200,1,0,0,0)
 	print "done"
 
 # Notes:
