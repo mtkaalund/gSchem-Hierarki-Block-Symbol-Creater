@@ -1,34 +1,50 @@
 #!/usr/bin/env python
 
-def box(x, y, width, height, color, width, capstyle, dashstyle, dashlength, filltype, fillwidth, angle1, pitch1, angle2, pitch2):
-# Valid in: Schematic and Symbol files
-#POS	Field	Type/unit	Description
-# #	type	char		B
-# 1	x	int/mils	Lower left hand X coordinate
-# 2	y	int/mils	Lower left hand Y coordinate
-# 3	width	int/mils	Width of the box (x direction)
-# 4	height	int/mils	Height of the box (y direction)
-# 5	color	int		Color index
-# 6	width	int/mils	Width of lines
-# 7 	capstyle int/mils	Line cap style
-	color = 1
-	linewidth = 60
-	capstyle = 1 # none = 0, square = 1, round = 2
-	sout = "B " + str(x) + " " + str(y) + " "
-	sout = sout + str(width) + " " + str(height) + " "
-	sout = sout + str(color) + " " + str(linewidth) + " "
+class SchematicDraw:
+	_capstyle  = ["none","square","round"]
+	_dashstyle = ["solid","dotted","dashed","center","phantom"]
+	_filltype  = ["hollow","fill","mesh","hatch","void"]
+
+	def add_version():
+		_version = "20110115"
+		return "v " + _version + " 2\n"
 	
-	# if dashstyle is not used for SOLID and DOTTED
-	if dashstyle == 0 or dashstyle == 1:
-		dashlenght = -1
-		if dashstyle == 0:
-			dashspace  = -1
-	sout = sout + str(dashstyle) + " " + str(dashlength) + " "
-	sout = sout + str(dashspace)
-	# Not done as of yet
+	def add_to( string ):
+		return " " + str(string)
+
+	def box(x, y, w, h, c, linewidth, capstyle, dashstyle, dashlength, filltype, fillwidth, argle1, pitch1, angle2, pitch2):
+		sout = "B" + add_to(x) + add_to(y) + add_to(w) + " "
+		sout = sout + add_to(h)+ add_to(c) + add_to(linewidth) + " "
+		sout = sout + add_to(capstyle) + " "
+
+		# if dashstyle is not used for SOLID and DOTTED
+		if dashstyle == 0 or dashstyle == 1:
+			dashlenght = -1
+			if dashstyle == 0:
+				dashspace  = -1
+		sout = sout + add_to(dashstyle) + add_to(dashlength) + " "
+		sout = sout + add_to(dashspace) + add_to(filltype) + " "
+		
+		if filltype == 0:
+			fillwidth = -1
+			angle1 = -1
+			angle2 = -1
+			pitch1 = -1
+			pitch2 = -1
+		
+		sout = sout + add_to(fillwidth) + add_to(angle1) + " "
+		sout = sout + add_to(pitch1) + add_to(angle2) + " "
+		sout = sout + add_to(pitch2) 
+
+		return sout
 		
 
 if __name__ == "__main__":
 	print "This is an test, of how to create a gschem symbol"
 
 	print "done"
+
+# Notes:
+# Pins should all be 300 mils long.
+# and 400 mils between vertically pins.
+
