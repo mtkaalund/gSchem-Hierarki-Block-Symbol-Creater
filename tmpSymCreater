@@ -1,5 +1,32 @@
 #!/usr/bin/env python
 
+def box(x, y, width, height, color, width, capstyle, dashstyle, dashlength, filltype, fillwidth, angle1, pitch1, angle2, pitch2):
+# Valid in: Schematic and Symbol files
+#POS	Field	Type/unit	Description
+# #	type	char		B
+# 1	x	int/mils	Lower left hand X coordinate
+# 2	y	int/mils	Lower left hand Y coordinate
+# 3	width	int/mils	Width of the box (x direction)
+# 4	height	int/mils	Height of the box (y direction)
+# 5	color	int		Color index
+# 6	width	int/mils	Width of lines
+# 7 	capstyle int/mils	Line cap style
+	color = 1
+	linewidth = 60
+	capstyle = 1 # none = 0, square = 1, round = 2
+	sout = "B " + str(x) + " " + str(y) + " "
+	sout = sout + str(width) + " " + str(height) + " "
+	sout = sout + str(color) + " " + str(linewidth) + " "
+	
+	# if dashstyle is not used for SOLID and DOTTED
+	if dashstyle == 0 or dashstyle == 1:
+		dashlenght = -1
+		if dashstyle == 0:
+			dashspace  = -1
+	sout = sout + str(dashstyle) + " " + str(dashlength) + " "
+	sout = sout + str(dashspace)
+	# Not done as of yet
+		
 
 if __name__ == "__main__":
 	print "This is an test, of how to create a gschem symbol"
