@@ -45,7 +45,7 @@ class SymbolDraw:
 		sout = sout + add_to(pintype) + add_to(whichend)
 		return sout + '\n'
 
-	def tekst(self, x, y, color, size, visibility, shown_name_value, angle, alignment, num_lines, strings):
+	def text(self, x, y, color, size, visibility, shown_name_value, angle, alignment, num_lines, strings):
 		sout = "T" + add_to(x) + add_to(y) + add_to(color)
 		sout = sout + add_to(size) + add_to(visibility)
 		sout = sout + add_to(shown_name_value) 
