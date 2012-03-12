@@ -45,12 +45,38 @@ class SymbolDraw:
 		sout = sout + add_to(pintype) + add_to(whichend)
 		return sout + '\n'
 
+	def tekst(self, x, y, color, size, visibility, shown_name_value, angle, alignment, num_lines, strings):
+		sout = "T" + add_to(x) + add_to(y) + add_to(color)
+		sout = sout + add_to(size) + add_to(visibility)
+		sout = sout + add_to(shown_name_value) 
+		
+		if angle in [0,90,180,270]:
+			sout = sout + add_to(angle)
+		else:
+			sout = sout + add_to(0)
+
+		if alignment in range(0,8):
+			sout = sout + add_to(alignment)
+		else:
+			sout = sout + add_to(0)
+
+		if num_lines == 0:
+			sout = sout + add_to(1) + '\n'
+		else:
+			sout = sout + add_to(num_lines) + '\n'
+
+		for entry in strings:
+			sout = sout + entry + '\n'
+
+		return sout
+
 if __name__ == "__main__":
 	print "This is an test, of how to create a gschem symbol"
 	obj = SymbolDraw()
 	print obj.add_version(),
 	print obj.box(33000,67300, 2000, 2000, 3, 60, 0, 2, 75, 50, 0, 1, 1, 1,1,1),
 	print obj.pin(0,200,200,1,0,0,0)
+	print obj.tekst(16900, 35800,3,10,1,0,0,0,5,["text string line 1", "text string line 2", "text string line 3", "text string line 4", "text string line 5"])
 	print "done"
 
 # Notes:
