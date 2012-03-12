@@ -64,8 +64,11 @@ class Fill(object):
 	def printout(self):
 		print self.get_fill()
 			
-#class SymbolBox(Coordinate):
-#	def __init__(self, _color = 3, _width,
+class SymbolBox(Coordinate):
+	def __init__(self, _coordinates, _fill, _color = 3):
+		self.coordinates = _coordinates
+		self.fill = _fill
+		self.color = _color
 
 
 class SymbolDraw:
