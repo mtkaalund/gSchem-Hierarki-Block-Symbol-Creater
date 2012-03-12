@@ -3,7 +3,7 @@
 def add_to( string ):
 	return " " + str(string)
 
-class SchematicDraw:
+class SymbolDraw:
 	_capstyle  = ["none","square","round"]
 	_dashstyle = ["solid","dotted","dashed","center","phantom"]
 	_filltype  = ["hollow","fill","mesh","hatch","void"]
@@ -44,11 +44,12 @@ class SchematicDraw:
 		sout = sout + add_to(y2) + add_to(color)
 		sout = sout + add_to(pintype) + add_to(whichend)
 		return sout + '\n'
-		
+
 
 if __name__ == "__main__":
 	print "This is an test, of how to create a gschem symbol"
 	obj = SchematicDraw()
+	obj = SymbolDraw()
 	print obj.add_version(),
 	print obj.box(33000,67300, 2000, 2000, 3, 60, 0, 2, 75, 50, 0, 1, 1, 1,1,1),
 	print obj.pin(0,200,200,1,0,0,0)
